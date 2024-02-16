@@ -1,0 +1,45 @@
+name: Code Analyzer
+on:
+    pull_request:
+        types: [review_requested]
+    issue_comment: # Note: This event will only trigger a workflow run if the workflow file is on the default branch.
+        types: [created]
+jobs:
+    analyze_manual:
+        if: github.event.issue.pull_request && contains(github.event.comment.body, '/scan')
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Install SFDX CLI and Scanner
+              run: |
+                  npm install @salesforce/cli -g
+                  sf plugins install @salesforce/sfdx-scanner
+
+            - name: Run SFDX Scanner - Report findings as comments
+              uses: mitchspano/sfdx-scan-pull-request@v0.1.15
+              with:
+                  strictly-enforced-rules: '[{ "engine": "pmd", "category": "Performance,Security" }]'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    analyze_auto:
+        if: github.event.action == 'review_requested'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Install SFDX CLI and Scanner
+              run: |
+                  npm install @salesforce/cli -g
+                  sf plugins install @salesforce/sfdx-scanner
+
+            - name: Run SFDX Scanner - Report findings as comments
+              uses: mitchspano/sfdx-scan-pull-request@v0.1.15
+              with:
+                  strictly-enforced-rules: '[{ "engine": "pmd", "category": "Performance,Security" }]'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
