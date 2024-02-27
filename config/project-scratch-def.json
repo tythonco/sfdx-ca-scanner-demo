@@ -1,0 +1,18 @@
+{
+  "orgName": "SFDX-CA-Scanner-Demo",
+  "edition": "Developer",
+  "settings": {
+      "lightningExperienceSettings": {
+          "enableS1DesktopEnabled": true
+      },
+      "mobileSettings": {
+          "enableS1EncryptedStoragePref2": false
+      },
+      "securitySettings": {
+          "sessionSettings": {
+              "sessionTimeout": "TwelveHours"
+          }
+      }
+  },
+  "adminEmail": "sfdx-ca-scanner-demo@tython.co"
+}
