@@ -17,7 +17,9 @@ jobs:
             - name: Run SFDX Scanner - Report findings as comments
               uses: tythonco/sfdx-scan-pull-request@v0.1.17
               with:
-                  engine: 'pmd'
+                  engine: 'pmd-appexchange'
+                  head: refs/pull/${{ github.event.issue.number }}/head
+                  base: refs/pull/${{ github.event.issue.number }}/base
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     analyze_auto:
@@ -30,8 +32,8 @@ jobs:
                   fetch-depth: 0
 
             - name: Run SFDX Scanner - Report findings as comments
-              uses: mitchspano/sfdx-scan-pull-request@v0.1.15
+              uses: tythonco/sfdx-scan-pull-request@v0.1.17
               with:
-                  strictly-enforced-rules: '[{ "engine": "pmd", "category": "Performance,Security" }]'
+                  engine: 'pmd-appexchange'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
