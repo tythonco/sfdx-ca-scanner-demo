@@ -10,6 +10,9 @@ jobs:
         runs-on: ubuntu-latest
         container: salesforce/cli:latest-full
         steps:
+            - uses: xt0rted/pull-request-comment-branch@v2
+              id: comment-branch
+
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
@@ -19,8 +22,8 @@ jobs:
               uses: tythonco/sfdx-scan-pull-request@v0.1.17
               with:
                   engine: 'pmd-appexchange'
-                  head: refs/pull/${{ github.event.issue.number }}/head
-                  base: refs/pull/${{ github.event.issue.number }}/base
+                  head: ${{ steps.comment-branch.outputs.head_sha }}
+                  base: ${{ steps.comment-branch.outputs.base_sha }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     analyze_auto:
