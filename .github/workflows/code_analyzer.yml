@@ -24,6 +24,7 @@ jobs:
               with:
                   engine: 'pmd-appexchange'
                   head: ${{ steps.comment-branch.outputs.head_ref }}
+                  head_sha: ${{ steps.comment-branch.outputs.head_sha }}
                   base: ${{ steps.comment-branch.outputs.base_ref }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
